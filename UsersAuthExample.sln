@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsersAuthExample", "src/UsersAuthExample.csproj", "{1C014116-04AF-45D4-B121-BB21B6C719B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C74190FC-826A-492C-9E64-A35FBAF624FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C014116-04AF-45D4-B121-BB21B6C719B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C014116-04AF-45D4-B121-BB21B6C719B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C014116-04AF-45D4-B121-BB21B6C719B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C014116-04AF-45D4-B121-BB21B6C719B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1C014116-04AF-45D4-B121-BB21B6C719B2} = {C74190FC-826A-492C-9E64-A35FBAF624FA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F659625F-D76B-4F3B-BC2A-45AD8B771473}
+	EndGlobalSection
+EndGlobal
