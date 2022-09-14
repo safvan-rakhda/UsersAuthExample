@@ -11,5 +11,11 @@ namespace UsersAuthExample.Response
         public bool IsValid => HttpStatusCode == HttpStatusCode.OK && (Errors == null || !Errors.Any());
 
         public IDictionary<string, ICollection<string>> Errors { get; set; }
+
+        public ResponseBase()
+        {
+            HttpStatusCode = HttpStatusCode.OK;
+            Errors = new Dictionary<string, ICollection<string>>();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace UsersAuthExample
         {
             FluentMapper.Initialize(config => { 
                 config.AddMap(new UserDtoMap()); 
+                config.AddMap(new UserToAuthenticateDtoMap()); 
             });
 
             services.AddMvcCore().AddApiExplorer();

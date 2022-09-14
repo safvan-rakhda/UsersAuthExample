@@ -10,5 +10,7 @@ namespace UsersAuthExample.Services.Interfaces
         public Task<User> GetUserById(int userId, CancellationToken cancellationToken = default);
 
         public Task<User> CreateUser(CreateUserServiceRequest request, CancellationToken cancellationToken = default);
+
+        public Task<AuthenticateUserServiceResponse> AuthenticateUser(AuthenticateUserServiceRequest request, CancellationToken cancellationToken = default);
     }
 }
