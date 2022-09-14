@@ -11,5 +11,7 @@
         public string LastName { get; set; }
 
         public int Role { get ; set ; }
+
+        public string Secrect { get; set; }
     }
 }
