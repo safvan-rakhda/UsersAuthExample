@@ -2,7 +2,8 @@
 {
     public class UserSignInApiResponse
     {
-        //Returns token if authenticated 
+        public string UserName { get; set; }
+
         public string Token { get; set; }
     }
 }

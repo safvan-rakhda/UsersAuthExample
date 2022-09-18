@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UsersAuthExample.Data.Dto;
 using UsersAuthExample.Services.ServiceRequest;
@@ -12,5 +13,7 @@ namespace UsersAuthExample.Data.Interfaces
         public Task<UserDto> CreateUser(CreateUserServiceRequest request, CancellationToken cancellationToken = default);
 
         public Task<UserToAuthenticateDto> GetUserToAuthenticate(string username, CancellationToken cancellationToken = default);
+
+        public Task<List<UserDto>> GetUsers(CancellationToken cancellationToken = default);
     }
 }

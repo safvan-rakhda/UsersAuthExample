@@ -26,6 +26,7 @@ namespace UsersAuthExample.Mappings.AutoMapper
 
             CreateMap<UserSignInApiRequest, AuthenticateUserServiceRequest>();
             CreateMap<AuthenticateUserServiceResponse, UserSignInApiResponse>();
+            CreateMap<GetUsersServiceResponse, GetUsersApiResponse>();
         }
     }
 }

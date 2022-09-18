@@ -1,4 +1,5 @@
 using Dapper.FluentMap;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -8,10 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+using System.Security.Claims;
+using UsersAuthExample.Auth;
 using UsersAuthExample.Extensions.DependencyInjections;
 using UsersAuthExample.Mappings.Dapper;
 
@@ -29,9 +29,10 @@ namespace UsersAuthExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            FluentMapper.Initialize(config => { 
-                config.AddMap(new UserDtoMap()); 
-                config.AddMap(new UserToAuthenticateDtoMap()); 
+            FluentMapper.Initialize(config =>
+            {
+                config.AddMap(new UserDtoMap());
+                config.AddMap(new UserToAuthenticateDtoMap());
             });
 
             services.AddMvcCore().AddApiExplorer();
@@ -40,6 +41,19 @@ namespace UsersAuthExample
             services.AddApiVersioning();
 
             services.AddControllers();
+            services.AddAuthentication(Options =>
+            {
+                Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, JwtHandler.GanerateJwtHandler());
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                    policy.RequireClaim(ClaimTypes.Role, new[] { "1" })
+                );
+            });
 
             //Add ApiVersion in swagger
             //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -55,6 +69,24 @@ namespace UsersAuthExample
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UsersAuthExample", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme { In = ParameterLocation.Header, Description = "Please enter into field the word 'Bearer' following by space and JWT", Name = "Authorization", Type = SecuritySchemeType.ApiKey });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    },
+                });
             });
             //services.AddSwaggerGenNewtonsoftSupport();
         }
@@ -90,6 +122,8 @@ namespace UsersAuthExample
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

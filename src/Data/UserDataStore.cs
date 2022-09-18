@@ -18,6 +18,7 @@ namespace UsersAuthExample.Data
         private readonly string _spGetUserById = "apisp_getUserById";
         private readonly string _spCreateUser = "apisp_createUser";
         private readonly string _spGetUserByUsername = "apisp_getUserByUsername";
+        private readonly string _spGetUsers = "apisp_getUsers";
 
         public UserDataStore(IConfiguration configuration)
         {
@@ -71,6 +72,22 @@ namespace UsersAuthExample.Data
                 using var connection = new SqlConnection(_configuration.GetConnectionString("Sql.Users"));
                 var users = await connection.QueryAsync<UserToAuthenticateDto>(_spGetUserByUsername, new { username }, commandType: System.Data.CommandType.StoredProcedure);
                 return users.ToList().FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<UserDto>> GetUsers(CancellationToken cancellationToken = default)
+        {
+            IEnumerable<UserDto> users;
+            try
+            {
+                using var connection = new SqlConnection(_configuration.GetConnectionString("Sql.Users"));
+                users = await connection.QueryAsync<UserDto>(_spGetUsers, commandType: System.Data.CommandType.StoredProcedure);
+
+                return users.ToList();
             }
             catch (Exception)
             {

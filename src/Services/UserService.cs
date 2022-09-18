@@ -42,8 +42,9 @@ namespace UsersAuthExample.Services
                 return serviceResponse;
             }
 
-            //TODO: compute accesstoken
-            serviceResponse.Token = dbUser.Password;
+            var user = await _userDataStore.GetUserById(dbUser.UserId, cancellationToken);
+            serviceResponse.Token = await JwtHandler.GanerateToken(new GanerateTokenRequest() { UserId = user.UserId, Roles = new[] { user.Role } });
+            serviceResponse.UserName = user.UserName;
             return serviceResponse;
         }
 
@@ -71,6 +72,21 @@ namespace UsersAuthExample.Services
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public async Task<GetUsersServiceResponse> GetUsers(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var users = await _userDataStore.GetUsers(cancellationToken);
+                return new GetUsersServiceResponse() { Items = users };
+            }
+            catch (Exception ex)
+            {
+                GetUsersServiceResponse response = new() { HttpStatusCode = HttpStatusCode.InternalServerError };
+                response.Errors.Add("Error in SQL for GetUsers", new[] { ex.Message });
+                return response;
             }
         }
     }
