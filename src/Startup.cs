@@ -14,6 +14,7 @@ using System.Security.Claims;
 using UsersAuthExample.Auth;
 using UsersAuthExample.Extensions.DependencyInjections;
 using UsersAuthExample.Mappings.Dapper;
+using UsersAuthExample.Middleware;
 
 namespace UsersAuthExample
 {
@@ -126,6 +127,8 @@ namespace UsersAuthExample
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<PreventLoggedInUserMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

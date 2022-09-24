@@ -15,5 +15,7 @@ namespace UsersAuthExample.Services.Interfaces
             , CancellationToken cancellationToken = default);
 
         public Task<GetUsersServiceResponse> GetUsers(CancellationToken cancellationToken = default);
+
+        public Task<string> DeleteUsersAsync(int[] userIds, CancellationToken cancellationToken = default);
     }
 }

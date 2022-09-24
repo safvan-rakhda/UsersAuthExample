@@ -10,10 +10,14 @@ namespace UsersAuthExample.Data.Interfaces
     {
         public Task<UserDto> GetUserById(int userId, CancellationToken cancellationToken = default);
 
-        public Task<UserDto> CreateUser(CreateUserServiceRequest request, CancellationToken cancellationToken = default);
+        public Task<UserDto> CreateUser(CreateUserServiceRequest request
+            , CancellationToken cancellationToken = default);
 
-        public Task<UserToAuthenticateDto> GetUserToAuthenticate(string username, CancellationToken cancellationToken = default);
+        public Task<UserToAuthenticateDto> GetUserToAuthenticate(string username
+            , CancellationToken cancellationToken = default);
 
         public Task<List<UserDto>> GetUsers(CancellationToken cancellationToken = default);
+
+        public void DeleteUsersAsync(int[] userIds, CancellationToken cancellationToken = default);
     }
 }

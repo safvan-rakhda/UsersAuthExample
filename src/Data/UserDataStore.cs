@@ -1,13 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UsersAuthExample.Data.Dto;
 using UsersAuthExample.Data.Interfaces;
-using System.Data.SqlClient;
-using System.Collections.Generic;
-using Dapper;
-using System.Linq;
-using System;
 using UsersAuthExample.Services.ServiceRequest;
 
 namespace UsersAuthExample.Data
@@ -19,6 +20,7 @@ namespace UsersAuthExample.Data
         private readonly string _spCreateUser = "apisp_createUser";
         private readonly string _spGetUserByUsername = "apisp_getUserByUsername";
         private readonly string _spGetUsers = "apisp_getUsers";
+        private readonly string _spGetDeleteUsers = "apisp_DeleteUsers";
 
         public UserDataStore(IConfiguration configuration)
         {
@@ -39,7 +41,8 @@ namespace UsersAuthExample.Data
             try
             {
                 using var connection = new SqlConnection(_configuration.GetConnectionString("Sql.Users"));
-                var userId = await connection.QueryFirstOrDefaultAsync<int>(_spCreateUser, spParams, commandType: System.Data.CommandType.StoredProcedure);
+                var userId = await connection.QueryFirstOrDefaultAsync<int>(_spCreateUser, spParams
+                    , commandType: CommandType.StoredProcedure);
 
                 return await GetUserById(userId, cancellationToken);
             }
@@ -55,7 +58,8 @@ namespace UsersAuthExample.Data
             try
             {
                 using var connection = new SqlConnection(_configuration.GetConnectionString("Sql.Users"));
-                users = await connection.QueryAsync<UserDto>(_spGetUserById, new { user_id = userId }, commandType: System.Data.CommandType.StoredProcedure);
+                users = await connection.QueryAsync<UserDto>(_spGetUserById, new { user_id = userId }
+                , commandType: CommandType.StoredProcedure);
 
                 return users.ToList().FirstOrDefault();
             }
@@ -85,9 +89,21 @@ namespace UsersAuthExample.Data
             try
             {
                 using var connection = new SqlConnection(_configuration.GetConnectionString("Sql.Users"));
-                users = await connection.QueryAsync<UserDto>(_spGetUsers, commandType: System.Data.CommandType.StoredProcedure);
+                users = await connection.QueryAsync<UserDto>(_spGetUsers, commandType: CommandType.StoredProcedure);
 
                 return users.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async void DeleteUsersAsync(int[] userIds, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                //TODO: Call _spGetDeleteUsers SP
             }
             catch (Exception)
             {

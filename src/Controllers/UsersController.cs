@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using UsersAuthExample.Attributes;
 using UsersAuthExample.Request;
 using UsersAuthExample.Response;
 using UsersAuthExample.Services.Interfaces;
@@ -55,6 +56,15 @@ namespace UsersAuthExample.Controllers
             }
 
             return StatusCode((int)serviceResponse.HttpStatusCode, serviceResponse.Errors);
+        }
+
+
+        [PreventLoggedInUser(FetchFromRoutes = true)]
+        [HttpPost]
+        [Route("deletebyid/{userId}")]
+        public async Task<IActionResult> DeleteById(int userId)
+        {
+            return Ok(await _userService.DeleteUsersAsync(new[] { userId }));
         }
     }
 }

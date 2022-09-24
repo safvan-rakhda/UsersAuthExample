@@ -89,5 +89,18 @@ namespace UsersAuthExample.Services
                 return response;
             }
         }
+
+        public async Task<string> DeleteUsersAsync(int[] userIds, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _userDataStore.DeleteUsersAsync(userIds, cancellationToken);
+                return "All user(s) deleted";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
